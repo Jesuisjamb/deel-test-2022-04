@@ -1,3 +1,4 @@
+const sequelize = require('sequelize')
 const { Op } = require('sequelize')
 
 exports.findAllUnpaid = async (params) =>{
@@ -38,5 +39,32 @@ exports.handlePayable = async (params) =>{
                 }],
             required: true,
         }],
+    })
+    .then(async(jobData) => {
+        if(!jobData[0]) throw('Empty object')
+        const clientBalance = parseFloat(jobData[0]['Contract.Client.balance'])
+        const jobPrice      = parseFloat(jobData[0].price)
+        const jobId         = jobData[0].id
+        const isJobPaid     = jobData[0].paid
+
+        if(!isJobPaid){
+            if(clientBalance >= jobPrice){
+                const newClientBalance = (clientBalance - jobPrice).toFixed(2)
+                const contractorId = jobData[0]['Contract.ContractorId']
+                const date = new Date
+                
+                // Transactions
+                await Profile.update({ balance: newClientBalance }, {where : { id: profileId }})
+                await Profile.update({ balance: sequelize.literal(`balance + ${jobPrice}`)}, {where : { id: contractorId }})
+                await Job.update({ paid: 1, paymentDate: date.toISOString() }, {where : { id: jobId }})
+                return{'msg':'Payment sent'}
+            }
+            else return{'msg':'Missing balance'}
+        }
+        else return{'msg':'Job already paid in full'}
+    })
+    .catch(e => {
+        console.error(e)
+        return
     })
 }
