@@ -12,5 +12,10 @@ router.get('/:id', getProfile, async (req, res = response) =>{
 })
 
 // 1. ***GET*** `/contracts` - Returns a list of contracts belonging to a user (client or contractor), the list should only contain non terminated contracts.  
+router.get('/', getProfile, async (req, res = response) =>{
+    const contract = await contractController.getAll(req)
+    if(!contract) return res.status(404).json({'msg':'Error'}).end()
+    res.json({contract})
+})
 
 module.exports = router;

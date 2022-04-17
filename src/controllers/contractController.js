@@ -9,3 +9,11 @@ exports.getById = async (req) =>{
     if(!Number.isInteger(parseInt(id))) return 
     return await contractService.findOne({model, profileId, profileType, id})
 }
+
+exports.getAll = async (req) =>{
+    const model = req.app.get('models')
+    const profileId = `${req.profile.id}`
+    const profileType = `${req.profile.type}`
+    
+    return await contractService.findAll({model, profileId, profileType})
+}
