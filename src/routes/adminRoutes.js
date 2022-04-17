@@ -12,5 +12,10 @@ router.get('/best-profession', getProfile, async (req, res = response) =>{
 })
 
 // 1. ***GET*** `/admin/best-clients?start=<date>&end=<date>&limit=<integer>` - returns the clients the paid the most for jobs in the query time period. limit query parameter should be applied, default limit is 2.
+router.get('/best-clients', getProfile, async (req, res = response) =>{
+    const bestClients = await adminController.getBestClients(req)
+    if(!bestClients) return res.status(404).json({'msg':'Error'}).end()
+    res.json({bestClients})
+})
 
 module.exports = router;
