@@ -12,5 +12,10 @@ router.get('/unpaid', getProfile, async (req, res = response) =>{
 })
 
 // 1. ***POST*** `/jobs/:job_id/pay` - Pay for a job, a client can only pay if his balance >= the amount to pay. The amount should be moved from the client's balance to the contractor balance.
+router.post('/:job_id/pay', getProfile, async (req, res = response) =>{
+    const payment = await jobController.addPayment(req)
+    if(!payment) return res.status(404).json({'msg':'Error'}).end()
+    res.json({payment})
+})
 
 module.exports = router;

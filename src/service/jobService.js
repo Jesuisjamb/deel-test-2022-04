@@ -19,3 +19,24 @@ exports.findAllUnpaid = async (params) =>{
         }],
     })
 }
+
+exports.handlePayable = async (params) =>{
+    const {model, profileId, job_id} = params
+    const {Contract, Job, Profile} = model
+
+    return await Job.findAll({
+        where: {paid: {[Op.not]: true}, id: job_id  },
+        raw: true,
+        include: [{ 
+            model: Contract, 
+            as: Contract, 
+            where: { ClientId: profileId }, 
+            include: [{ 
+                    model: Profile, 
+                    as: 'Client', 
+                    required: true
+                }],
+            required: true,
+        }],
+    })
+}
