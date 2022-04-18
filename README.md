@@ -124,3 +124,10 @@ When you have finished the assignment, create a github repository and send us th
   
 
 Thank you and good luck! 🙏
+
+## RECOMMENDATIONS
+
+- POST jobs/:job_id/pay should have additional test cases to better evaluate situations of jobs with pending payments.
+- GET admin/best-profession?start=YYYY-MM-DD&end=YYYY-MM-DD should have tests for missing query params.
+- GET admin/best-clients?start=YYYY-MM-DD&end=YYYY-MM-DD&limit=N should have tests for missing query params.
+- All endpoints should have test cases that are not dependent of my given values. It'd be useful to validate type of query params.
