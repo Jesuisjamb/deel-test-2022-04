@@ -12,8 +12,8 @@ describe('GET jobs/unpaid', () => {
     })
 })
 
-// When job is valid for payment response is 200
-// When job is not valid for payment response is 401
+// When job is valid for payment --> response is 200
+// When job is not valid for payment --> response is 401
 // Therefore status is not evaluated
 describe('POST jobs/:job_id/pay', () => {
     it('It should return a confirmation object', async () => {
